@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOA - Minha Conta - Estabelecimento</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="js/main.js"></script>
+   
+    <script src="js/contarestaurante.js"></script>
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Container do Modal */
+        .modal-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Header do Modal */
+        .modal-header {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 24px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Body do Modal */
+        .modal-body {
+            padding: 32px 24px;
+        }
+
+        /* Formulário */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Upload de Imagem */
+        .image-upload {
+            border: 2px dashed #e1e8ed;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .image-upload:hover {
+            border-color: #e67e22;
+            background-color: #fdf8f5;
+        }
+
+        .image-upload.dragover {
+            border-color: #e67e22;
+            background-color: #fdf8f5;
+            transform: scale(1.02);
+        }
+
+        .image-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #bdc3c7;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .upload-text strong {
+            color: #e67e22;
+        }
+
+        /* Preview da Imagem */
+        .image-preview {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-image {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .remove-image:hover {
+            background: #c0392b;
+        }
+
+        /* Grid para campos lado a lado */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Switch de Disponibilidade */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #e67e22;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Botões */
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 24px;
+            border-top: 1px solid #e1e8ed;
+            background-color: #f8f9fa;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #d35400, #c0392b);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Demonstração */
+        .demo-btn {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+    </style>
+</head>
+
+
+<body class="contausuario">
+    <div class="header">
+        <div class="logo"><img src="imgs/Logo Aboa 1.png" alt=""></div>
+        <div class="nav-links">
+            <a href="aboa2.html" class="active">Voltar</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="account-header">
+            <h1 class="account-title">Minha Conta</h1>
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-photo">
+                <img src="imgs/Food.png" alt="Foto do restaurante">
+            </div>
+            <div class="user-info">
+                <h2 class="user-name">Burger Place</h2>
+                <p class="user-email">contato@burgerplace.com</p>
+                <p class="user-since">Estabelecimento desde janeiro de 2020</p>
+                <div class="buttons-container">
+                    <button class="btn btn-primary">Editar perfil</button>
+                    <button class="btn btn-outline">Visualizar como Cliente</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3 class="section-title">Informações de Contato <button class="action-btn-inline">Editar</button></h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Nome Fantasia</div>
+                    <div class="info-value" id="nome-fantasia">Burger Place</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Razão Social</div>
+                    <div class="info-value" id="razao-social">Burger Place S.A.</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">CNPJ</div>
+                    <div class="info-value" id="cnpj">12.345.678/0001-90</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Inscrição Estadual</div>
+                    <div class="info-value" id="inscricao-estadual">Isento</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">E-mail de Contato</div>
+                    <div class="info-value" id="email-contato">contato@burgerplace.com</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Telefone</div>
+                    <div class="info-value" id="telefone">(11) 98765-4321</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Ramo de Atividade</div>
+                    <div class="info-value" id="ramo-atividade">Hamburgueria</div>
+                </div>
+                <div class="info-item full-width">
+                    <div class="info-label">Endereço</div>
+                    <div class="info-value" id="endereco-completo">Av. Paulista, 1000 - São Paulo, SP</div>
+                </div>
+                <div class="info-item full-width">
+                    <div class="info-label">Descrição</div>
+                    <div class="info-value" id="descricao">Os melhores hambúrgueres artesanais da cidade.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section" id="menu-section">
+            <h3 class="section-title">Itens do Cardápio <button class="btn btn-primary" onclick="openModal()">+ Adicionar Item</button></h3>
+            <div class="menu-grid" id="restaurant-menu-items">
+                </div>
+        </div>
+
+        <div class="modal-overlay" id="itemModal" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Adicionar Item ao Cardápio</h2>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="itemForm">
+                        <div class="form-group">
+                            <label class="form-label" for="itemName">Nome do Item *</label>
+                            <input type="text" id="itemName" name="nome" class="form-input"
+                                placeholder="Ex: Hambúrguer Artesanal" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="itemDescription">Descrição</label>
+                            <textarea id="itemDescription" name="descricao" class="form-textarea"
+                                placeholder="Descreva os ingredientes e características do item..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="itemPrice">Preço (R$) *</label>
+                                <input type="number" id="itemPrice" name="preco" class="form-input" placeholder="0,00"
+                                    step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="itemCategory">Categoria *</label>
+                                <select id="itemCategory" name="categoria" class="form-select" required>
+                                    <option value="">Selecionar categoria</option>
+                                    <option value="Hambúrgueres">Hambúrgueres</option>
+                                    <option value="Pizza">Pizza</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option value="Sobremesas">Sobremesas</option>
+                                    <option value="Lanches">Lanches</option>
+                                    <option value="Pratos Principais">Pratos Principais</option>
+                                    <option value="Entradas">Entradas</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Imagem do Item</label>
+                            <div class="image-upload" id="imageUpload">
+                                <input type="file" id="itemImage" name="imagem" accept="image/*">
+                                <div class="upload-icon">📷</div>
+                                <div class="upload-text">
+                                    <strong>Clique para selecionar</strong> ou arraste uma imagem aqui
+                                    <br><small>PNG, JPG até 5MB</small>
+                                </div>
+                            </div>
+                            <div id="imagePreview" class="image-preview" style="display: none;">
+                                <img id="previewImg" class="preview-image" alt="Preview">
+                                <br>
+                                <button type="button" class="remove-image" onclick="removeImage()">Remover
+                                    imagem</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <div class="switch-label">
+                                <label class="switch">
+                                    <input type="checkbox" id="itemAvailable" name="disponivel" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span>Item disponível para pedidos</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" onclick="handleSave()">
+                        <span id="saveText">Salvar Item</span>
+                        <span id="saveLoading" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3 class="section-title">Ajuda e Suporte <button class="action-btn-inline">Contato</button></h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Central de Ajuda</div>
+                    <div class="info-value"><a href="#" style="color: #E25B0E; text-decoration: none;">Acessar Central
+                            de Ajuda</a></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Suporte Técnico</div>
+                    <div class="info-value">suporte@aboa.com</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Perguntas Frequentes</div>
+                    <div class="info-value"><a href="#" style="color: #E25B0E; text-decoration: none;">Ver FAQs</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Políticas da Plataforma</div>
+                    <div class="info-value"><a href="#" style="color: #E25B0E; text-decoration: none;">Ver Políticas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 ABOA - Todos os direitos reservados</p>
+    </div>
+</body>
+
+</html>

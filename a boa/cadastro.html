@@ -3,252 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - ABOA</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #d15b31;
-            color: white;
-            padding: 1rem 2rem;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: white;
-        }
-        
-        .location-icon {
-            font-size: 1.5rem;
-            margin-left: 3px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            font-weight: bold;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-        }
-        
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            min-height: calc(100vh - 60px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .form-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            padding: 3rem;
-            margin-top: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .form-header {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .form-title {
-            color: #d15b31;
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .form-subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #444;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #e9a653;
-            box-shadow: 0 0 0 2px rgba(233, 166, 83, 0.2);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .checkbox-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .form-button {
-            background-color: #e9a653;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 0.8rem 2rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .form-button:hover {
-            background-color: #d89743;
-        }
-        
-        .alternative-actions {
-            margin-top: 1.5rem;
-            text-align: center;
-            color: #666;
-        }
-        
-        .alternative-link {
-            color: #d15b31;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .alternative-link:hover {
-            text-decoration: underline;
-        }
-        
-        .decoration-circle {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background-color: #e9a653;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        
-        .circle-1 {
-            top: -100px;
-            right: 10%;
-        }
-        
-        .circle-2 {
-            bottom: 20%;
-            left: -50px;
-        }
-        
-        .form-divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: #999;
-        }
-        
-        .form-divider::before,
-        .form-divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background-color: #ddd;
-        }
-        
-        .form-divider span {
-            padding: 0 10px;
-        }
-        
-        .social-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-button {
-            flex: 1;
-            padding: 0.7rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background-color: white;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .social-button:hover {
-            background-color: #f5f5f5;
-        }
-        
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 2rem;
-                margin: 1rem;
-                width: 90%;
-            }
-            
-            .form-title {
-                font-size: 1.8rem;
-            }
-            
-            .social-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <title>ABOA - Cadastro </title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="js/main.js"></script>
+    <script src="js/cadastro.js"></script>
+
 </head>
-<body>
-    <nav class="navbar">
-        <a href="#" class="logo">
-            <img src="imgs/Logo Aboa 1.png" alt="">
-           
-        </a>
-        <div class="nav-links">
-            <a href="#">Sair</a>
+<body class="cadastro-page">
+    <header>
+        <h1><img src="imgs/Logo Aboa 1.png" style="height: 70px;"></h1>
+        <div class="auth-links">
+            <a href="aboa2.html">Sair</a>
         </div>
-    </nav>
+    </header>
     
     <div class="main-container">
         <div class="decoration-circle circle-1"></div>
@@ -258,19 +25,6 @@
             <div class="form-header">
                 <h1 class="form-title">Crie sua conta</h1>
                 <p class="form-subtitle">Comece a descobrir os melhores lugares perto de você</p>
-            </div>
-            
-            <div class="social-buttons">
-                <button class="social-button">
-                    <span>Google</span>
-                </button>
-                <button class="social-button">
-                    <span>Facebook</span>
-                </button>
-            </div>
-            
-            <div class="form-divider">
-                <span>ou</span>
             </div>
             
             <form>
@@ -304,6 +58,9 @@
             
             <div class="alternative-actions">
                 Já tem uma conta? <a href="login.html" class="alternative-link">Faça login</a>
+            </div>
+            <div class="alternative-actions">
+                Tem um estabelecimento? <a href="cadastrorestaurante.html" class="alternative-link">Cadastre-se</a>
             </div>
         </div>
     </div>

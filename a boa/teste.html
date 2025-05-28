@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="js/main.js"></script>
+    <script src="js/cardapio.js"></script> 
+</head>
+<body class="cardapio">
+    <div class="header">
+        <div class="logo"><img src="imgs/Logo Aboa 1.png" alt=""></div>
+        <div class="user-actions">
+            <a href="#">Minha conta</a>
+            <a href="#">Sair</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1 class="restaurant-name">Burger Place</h1>
+        
+        <div class="menu-header">
+            <div class="menu-title">
+                <span>🍔</span>
+                <span>Cardápio</span>
+            </div>
+            <button class="edit-button">Voltar</button>
+        </div>
+        
+        <div class="filter-container">
+            <div class="filter-group">
+                <!-- Botões de filtro serão inseridos pelo JavaScript -->
+            </div>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Buscar no cardápio...">
+            </div>
+        </div>
+        
+        <div class="menu-container">
+            <!-- As categorias e itens do menu serão inseridos dinamicamente pelo JavaScript -->
+        </div>
+        
+        <div class="pagination">
+            <div class="navigation-button disabled">❮</div>
+            <div class="page-button active">1</div>
+            <div class="page-button">2</div>
+            <div class="page-button">3</div>
+            <div class="navigation-button">❯</div>
+        </div>
+    </div>
+
+    <!-- Elementos adicionais necessários pelo JavaScript -->
+    <div class="menu-loader" style="display: none;">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+    
+    <div class="error-message" style="display: none;">
+        <!-- Mensagens de erro serão inseridas aqui -->
+    </div>
+    
+    <div class="no-results" style="display: none;">
+        <p>Nenhum item encontrado com o termo pesquisado.</p>
+    </div>
+
+    <!-- Script para simular API quando não houver backend real -->
+    <script>
+        // Simulação da API para desenvolvimento/teste
+        if (!window.fetch) {
+            console.warn('Fetch API não disponível. Usando simulação.');
+        }
+        
+        // Interceptar chamadas fetch para API simulada
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+            // Verificar se é uma chamada para nossa API
+            if (url.startsWith('/api/cardapio')) {
+                console.log('Interceptando chamada API:', url);
+                return simulateApiResponse(url);
+            }
+            // Caso contrário, usar fetch normal
+            return originalFetch(url, options);
+        };
+        
+        // Simular resposta da API
+        function simulateApiResponse(url) {
+            // Simular dados do cardápio para testes
+            const mockItems = [
+                {
+                    id: 1,
+                    nome: "Burger Classic",
+                    preco: 28.90,
+                    descricao: "Hambúrguer de carne bovina (150g), queijo cheddar, alface, tomate e molho especial da casa no pão brioche.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 2,
+                    nome: "Burger Duplo",
+                    preco: 35.90,
+                    descricao: "Dois hambúrgueres de carne bovina (300g), queijo cheddar duplo, cebola caramelizada, picles e molho especial da casa no pão brioche.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 3,
+                    nome: "Burger Especial Bacon",
+                    preco: 32.90,
+                    descricao: "Hambúrguer de carne bovina (180g), queijo cheddar, bacon crocante, cebola crispy, alface, tomate e molho barbecue no pão brioche.",
+                    disponivel: false,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 4,
+                    nome: "Cheeseburger",
+                    preco: 26.90,
+                    descricao: "Hambúrguer de carne bovina (150g), queijo cheddar duplo, picles e molho especial da casa no pão brioche.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 5,
+                    nome: "Burger Vegetariano",
+                    preco: 29.90,
+                    descricao: "Hambúrguer de grão de bico (150g), queijo brie, rúcula, tomate seco e maionese de ervas no pão integral.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 6,
+                    nome: "Burger Picanha",
+                    preco: 36.90,
+                    descricao: "Hambúrguer de picanha (180g), queijo prato, alface, tomate, cebola roxa e maionese defumada no pão australiano.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 7,
+                    nome: "Batata Frita Grande",
+                    preco: 18.90,
+                    descricao: "Porção grande de batatas fritas crocantes por fora e macias por dentro, acompanhadas de maionese da casa.",
+                    disponivel: false,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 8,
+                    nome: "Batata Frita Média",
+                    preco: 14.90,
+                    descricao: "Porção média de batatas fritas crocantes por fora e macias por dentro, acompanhadas de maionese da casa.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 9,
+                    nome: "Onion Rings",
+                    preco: 19.90,
+                    descricao: "Anéis de cebola empanados e fritos, servidos com molho barbecue defumado.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 10,
+                    nome: "Nuggets (8 unidades)",
+                    preco: 16.90,
+                    descricao: "Oito pedaços de frango empanado e frito, servidos com molho barbecue ou maionese da casa.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 11,
+                    nome: "Refrigerante Lata (350ml)",
+                    preco: 6.90,
+                    descricao: "Coca-Cola, Coca-Cola Zero, Guaraná, Guaraná Zero, Sprite ou Fanta.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 12,
+                    nome: "Suco Natural (400ml)",
+                    preco: 9.90,
+                    descricao: "Laranja, limão, maracujá ou abacaxi.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 13,
+                    nome: "Milk Shake de Chocolate",
+                    preco: 15.90,
+                    descricao: "Milk shake cremoso feito com sorvete artesanal de chocolate e calda de chocolate.",
+                    disponivel: false,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 14,
+                    nome: "Água Mineral (500ml)",
+                    preco: 4.90,
+                    descricao: "Água mineral sem gás ou com gás.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 15,
+                    nome: "Brownie com Sorvete",
+                    preco: 16.90,
+                    descricao: "Brownie quente de chocolate servido com uma bola de sorvete de creme e calda de chocolate.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 16,
+                    nome: "Petit Gateau",
+                    preco: 18.90,
+                    descricao: "Petit gateau de chocolate com centro cremoso servido com uma bola de sorvete de creme.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                },
+                {
+                    id: 17,
+                    nome: "Pudim de Leite",
+                    preco: 12.90,
+                    descricao: "Clássico pudim de leite condensado com calda de caramelo.",
+                    disponivel: true,
+                    imagem_url: "/api/placeholder/400/320"
+                }
+            ];
+            
+            // Criar resposta simulada
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(mockItems),
+                text: () => Promise.resolve(JSON.stringify(mockItems)),
+                status: 200,
+                statusText: 'OK'
+            });
+        }
+    </script>
+</body>
+</html>

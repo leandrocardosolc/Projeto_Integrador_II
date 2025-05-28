@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOA - Cadastro Estabelecimento</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="js/main.js"></script>
+    <script src="js/cadastrorestaurante.js"></script> </head>
+<body class="cadastro-restaurante-page">
+    <div class="background-circle circle-top-right"></div>
+    <div class="background-circle circle-bottom-left"></div>
+
+    <header class="header">
+        <div class="logo">
+            <img src="imgs/Logo Aboa 1.png" style="height: 70px;">
+        </div>
+        <a href="aboa2.html" class="exit-btn">Sair</a>
+    </header>
+
+    <div class="container">
+        <h1>Crie sua conta</h1>
+        <p class="subtitle">Cadastre seu estabelecimento</p>
+
+        <form id="restaurant-signup-form"> <h2 style="color: #d9553d; margin: 25px 0 15px 0; font-size: 18px;">Dados do Estabelecimento</h2>
+
+            <div class="form-group">
+                <label for="razao-social">Razão Social</label>
+                <input type="text" id="razao-social" placeholder="Razão social completa" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nome-fantasia">Nome Fantasia</label>
+                <input type="text" id="nome-fantasia" placeholder="Nome do estabelecimento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" placeholder="00.000.000/0000-00" required maxlength="18">
+            </div>
+
+            <div class="form-group">
+                <label for="inscricao-estadual">Inscrição Estadual</label>
+                <input type="text" id="inscricao-estadual" placeholder="Inscrição estadual (opcional)">
+                <div style="display: flex; align-items: center; margin-top: 5px;">
+                    <input type="checkbox" id="isento-ie" style="margin-right: 5px;">
+                    <label for="isento-ie" style="font-size: 13px; color: #555;">Isento de Inscrição Estadual</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ramo-atividade">Ramo de Atividade</label>
+                <select id="ramo-atividade" required>
+                    <option value="">Selecione o ramo de atividade</option>
+                    <option value="PIZZARIA">Pizzaria</option>
+                    <option value="JAPONESA">Japonesa</option>
+                    <option value="ARABE">Árabe</option>
+                    <option value="BRASILEIRA">Brasileira</option>
+                    <option value="HAMBURGUERIA">Hamburgueria</option>
+                    <option value="BAR">Bar</option>
+                    <option value="OUTROS">Outros</option> 
+                </select>
+            </div>
+
+            <h2 style="color: #d9553d; margin: 25px 0 15px 0; font-size: 18px;">Endereço do Estabelecimento</h2>
+
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <input type="text" id="cep" placeholder="00000-000" required maxlength="9">
+            </div>
+
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <input type="text" id="logradouro" placeholder="Rua/Avenida" required> </div>
+
+            <div class="form-row">
+                <div class="form-group-half">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" placeholder="Nº" required>
+                </div>
+                <div class="form-group-half">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" placeholder="Sala, loja, etc.">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="bairro" placeholder="Bairro" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group-half">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" placeholder="Cidade" required>
+                </div>
+                <div class="form-group-half">
+                    <label for="estado">Estado</label>
+                    <select id="estado" required>                    
+                        <option value="SP">SP</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefone">Telefone do Estabelecimento</label>
+                <input type="text" id="telefone" placeholder="(00) 0000-0000" required maxlength="15">
+            </div>
+            
+            <div class="form-group">
+                <label for="email-estabelecimento">E-mail do Estabelecimento</label>
+                <input type="email" id="email-estabelecimento" placeholder="email@estabelecimento.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="logo-url">URL do Logotipo</label>
+                <input type="url" id="logo-url" placeholder="Ex: https://seuestabelecimento.com/logo.png">
+            </div>
+
+            <div class="form-group">
+                <label for="cover-image-url">URL da Imagem de Capa</label>
+                <input type="url" id="cover-image-url" placeholder="Ex: https://seuestabelecimento.com/capa.png">
+            </div>
+
+            <div class="form-group">
+                <label for="descricao-estabelecimento">Descrição do Estabelecimento</label>
+                <textarea id="descricao-estabelecimento" placeholder="Breve descrição do seu negócio"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="link-mapa">Link do Mapa (Google Maps, etc.)</label>
+                <input type="url" id="link-mapa" placeholder="Ex: https://goo.gl/maps/abcde">
+            </div>
+
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" required>
+                <label for="terms" class="terms">Concordo com os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a></label>
+            </div>
+
+            <button type="submit" class="register-btn">Cadastrar</button>
+
+            <p class="login-link">Já tem uma conta? <a href="login.html">Faça login</a></p>
+        </form>
+    </div>
+</body>
+</html>
